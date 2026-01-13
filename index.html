@@ -1,324 +1,362 @@
 <!doctype html>
 <html lang="uk">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Перевірка зору</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Перевірка зору</title>
 
-  <style>
-    :root{
-      --blur: 6px;
-    }
+    <style>
+        :root{
+            --blur: 6px;
+        }
 
-    *{ box-sizing:border-box; }
+        *{ box-sizing:border-box; }
 
-    body{
-      margin:0;
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:#ffffff;
-      color:#000000;
-      font-family: Arial, Helvetica, sans-serif;
-    }
+        body{
+            margin:0;
+            min-height:100vh;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            background:#ffffff;
+            color:#000000;
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-    .wrap{
-      width:min(900px, 95vw);
-      padding:24px;
-    }
+        .wrap{
+            width:min(900px, 95vw);
+            padding:24px;
+        }
 
-    header{
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-end;
-      margin-bottom:16px;
-    }
+        header{
+            display:flex;
+            justify-content:space-between;
+            align-items:flex-end;
+            margin-bottom:16px;
+        }
 
-    h1{
-      font-size:16px;
-      letter-spacing:0.12em;
-      text-transform:uppercase;
-      margin:0;
-    }
+        h1{
+            font-size:16px;
+            letter-spacing:0.12em;
+            text-transform:uppercase;
+            margin:0;
+        }
 
-    .status{
-      font-size:13px;
-    }
+        .status{
+            font-size:13px;
+        }
 
-    .card{
-      border:3px solid #000;
-      padding:24px 18px;
-    }
+        .card{
+            border:3px solid #000;
+            padding:24px 18px;
+        }
 
-    /* ===== CHART ===== */
+        /* ===== CHART ===== */
 
-    .chart-area{
-      position:relative;
-      padding:20px 10px 10px;
-      overflow:hidden;
-    }
+        .chart-area{
+            position:relative;
+            padding:20px 10px 10px;
+            overflow:hidden;
+        }
 
-    .chart{
-      text-align:center;
-      filter: blur(var(--blur));
-      transition: filter 300ms ease;
-    }
+        .chart{
+            text-align:center;
+            filter: blur(var(--blur));
+            transition: filter 200ms linear;
+        }
 
-    .line{
-      font-weight:700;
-      letter-spacing:0.28em;
-      margin:14px 0;
-      text-transform:uppercase;
-    }
+        .line{
+            font-weight:700;
+            letter-spacing:0.28em;
+            margin:14px 0;
+            text-transform:uppercase;
+        }
 
-    .l1{ font-size:90px; }
-    .l2{ font-size:56px; }
-    .l3{ font-size:42px; }
-    .l4{ font-size:32px; }
-    .l5{ font-size:26px; }
-    .l6{ font-size:22px; }
-    .l7{ font-size:20px; }
-    .l8{ font-size:18px; }
-    .l9{ font-size:16px; }
-    .l10{ font-size:14px; }
+        .l1{ font-size:90px; }
+        .l2{ font-size:56px; }
+        .l3{ font-size:42px; }
+        .l4{ font-size:32px; }
+        .l5{ font-size:26px; }
+        .l6{ font-size:22px; }
+        .l7{ font-size:20px; }
+        .l8{ font-size:18px; }
+        .l9{ font-size:16px; }
+        .l10{ font-size:14px; }
 
-    .divider{
-      height:6px;
-      background:#000;
-      margin:22px 0;
-    }
+        .divider{
+            height:6px;
+            background:#000;
+            margin:22px 0;
+        }
 
-    /* blink */
-    .blink{
-      position:absolute;
-      inset:0;
-      background:#000;
-      opacity:0;
-      pointer-events:none;
-      transition:opacity 120ms linear;
-    }
-    .blink.on{ opacity:0.85; }
+        /* blink */
+        .blink{
+            position:absolute;
+            inset:0;
+            background:#000;
+            opacity:0;
+            pointer-events:none;
+            transition:opacity 120ms linear;
+        }
+        .blink.on{ opacity:0.85; }
 
-    .hint{
-      text-align:center;
-      font-size:14px;
-      margin-top:12px;
-    }
+        .hint{
+            text-align:center;
+            font-size:14px;
+            margin-top:12px;
+        }
 
-    .final{
-      font-size:13px;
-      letter-spacing:0.32em;
-      margin-top:26px;
-      opacity:0;
-      transition: opacity 600ms ease;
-    }
+        /* финальний рядок */
+        .final{
+            font-size:13px;
+            letter-spacing:0.32em;
+            margin-top:26px;
+            opacity:0;
+            transition: opacity 600ms ease;
+        }
 
-    /* ===== CONTROLS ===== */
+        /* ===== CONTROLS ===== */
 
-    .controls{
-      margin-top:20px;
-      border-top:2px solid #000;
-      padding-top:16px;
-    }
+        .controls{
+            margin-top:20px;
+            border-top:2px solid #000;
+            padding-top:16px;
+        }
 
-    .row{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      margin:10px 0;
-      flex-wrap:wrap;
-    }
+        .row{
+            display:flex;
+            align-items:center;
+            gap:12px;
+            margin:10px 0;
+            flex-wrap:wrap;
+        }
 
-    label{
-      min-width:140px;
-      font-size:14px;
-    }
+        label{
+            min-width:140px;
+            font-size:14px;
+        }
 
-    input[type="range"]{
-      width:280px;
-      accent-color:#000;
-    }
+        input[type="range"]{
+            width:280px;
+            accent-color:#000;
+        }
 
-    button{
-      padding:8px 14px;
-      font-size:13px;
-      border:2px solid #000;
-      background:#fff;
-      cursor:pointer;
-    }
+        button{
+            padding:8px 14px;
+            font-size:13px;
+            border:2px solid #000;
+            background:#fff;
+            cursor:pointer;
+        }
 
-    button.active{
-      background:#000;
-      color:#fff;
-    }
+        button.active{
+            background:#000;
+            color:#fff;
+        }
 
-    .readout{
-      font-size:14px;
-      min-width:140px;
-    }
+        .readout{
+            font-size:14px;
+            min-width:110px;
+        }
 
-    footer{
-      margin-top:14px;
-      text-align:right;
-      font-size:12px;
-    }
-  </style>
+        footer{
+            margin-top:14px;
+            text-align:right;
+            font-size:12px;
+        }
+    </style>
 </head>
 <body>
 <div class="wrap">
-  <header>
-    <h1>Перевірка зору</h1>
-    <div class="status" id="status">Стан: нечітко</div>
-  </header>
+    <header>
+        <h1>Перевірка зору</h1>
+        <div class="status" id="status">Стан: нечітко</div>
+    </header>
 
-  <div class="card">
-    <div class="chart-area">
-      <div class="chart" id="chart">
-        <div class="line l1">З</div>
-        <div class="line l2">Д Н</div>
-        <div class="line l3">Е М</div>
-        <div class="line l4">Н А Р О</div>
-        <div class="line l5">Д Ж Е Н Н Я</div>
+    <div class="card">
+        <!-- CHART -->
+        <div class="chart-area">
+            <div class="chart" id="chart">
+                <div class="line l1">З</div>
+                <div class="line l2">Д Н</div>
+                <div class="line l3">Е М</div>
+                <div class="line l4">Н А Р О</div>
+                <div class="line l5">Д Ж Е Н Н Я</div>
 
-        <div class="divider"></div>
+                <div class="divider"></div>
 
-        <div class="line l6">Н Е Х А Й</div>
-        <div class="line l7">Б І Л Ь Ш Е</div>
-        <div class="line l8">Н Е  Т Р Е Б А</div>
-        <div class="line l9">Б У Д Е  Ж М У</div>
-        <div class="line l10">Р И Т И С Ь</div>
+                <div class="line l6">Н Е Х А Й</div>
+                <div class="line l7">Б І Л Ь Ш Е</div>
+                <div class="line l8">Н Е  Т Р Е Б А</div>
+                <div class="line l9">Б У Д Е  Ж М У</div>
+                <div class="line l10">Р И Т И С Ь</div>
 
-        <div class="line final" id="finalLine">
-          П О Д А Р У Н О К — Л А З Е Р Н А  К О Р Е К Ц І Я  З О Р У
+                <div class="line final" id="finalLine">
+                    П О Д А Р У Н О К — Л А З Е Р Н А  К О Р Е К Ц І Я  З О Р У
+                </div>
+            </div>
+
+            <div class="blink" id="blink"></div>
         </div>
-      </div>
 
-      <div class="blink" id="blink"></div>
+        <div class="hint" id="hint">
+            Відрегулюй фокус і утримай чіткість (спочатку праве око, потім ліве)
+        </div>
+
+        <!-- CONTROLS -->
+        <div class="controls">
+            <div class="row">
+                <label>Око</label>
+                <button id="eyeBtn">ПРАВЕ</button>
+                <div class="readout" id="eyeDone">ПРАВЕ: ❌ • ЛІВЕ: ❌</div>
+            </div>
+
+            <div class="row">
+                <label>Фокус</label>
+                <input id="focus" type="range" min="0" max="100" value="20" />
+                <div class="readout" id="focusOut">–</div>
+            </div>
+
+            <div class="row">
+                <label>Стабілізація</label>
+                <button id="stabilize">УТРИМУВАТИ</button>
+                <div class="readout" id="hold">0.0 c</div>
+            </div>
+        </div>
+
+        <footer>З любовʼю ❤️</footer>
     </div>
-
-    <div class="hint" id="hint">
-      Відрегулюй і стабілізуй праве око
-    </div>
-
-    <div class="controls">
-      <div class="row">
-        <label>Око</label>
-        <button id="eyeBtn">ПРАВЕ</button>
-        <div class="readout" id="eyeDone">ПРАВЕ: ❌ • ЛІВЕ: ❌</div>
-      </div>
-
-      <div class="row">
-        <label>Фокус</label>
-        <input id="focus" type="range" min="0" max="100" value="20" />
-        <div class="readout" id="focusOut">–</div>
-      </div>
-
-      <div class="row">
-        <label>Стабілізація</label>
-        <button id="stabilize">УТРИМУВАТИ</button>
-        <div class="readout" id="hold">0.0 c</div>
-      </div>
-    </div>
-
-    <footer>З любовʼю ❤️</footer>
-  </div>
 </div>
 
 <script>
-  const blink = document.getElementById('blink');
-  const status = document.getElementById('status');
-  const hint = document.getElementById('hint');
-  const eyeBtn = document.getElementById('eyeBtn');
-  const eyeDone = document.getElementById('eyeDone');
-  const focus = document.getElementById('focus');
-  const focusOut = document.getElementById('focusOut');
-  const stabilize = document.getElementById('stabilize');
-  const holdOut = document.getElementById('hold');
-  const finalLine = document.getElementById('finalLine');
+    const chart = document.getElementById('chart');
+    const blink = document.getElementById('blink');
+    const status = document.getElementById('status');
+    const hint = document.getElementById('hint');
 
-  const TARGET = { R: 62, L: 38 };
-  const HOLD_SECONDS = 1.1;
+    const eyeBtn = document.getElementById('eyeBtn');
+    const eyeDone = document.getElementById('eyeDone');
 
-  let eye = 'R';
-  let passed = { R:false, L:false };
-  let holding = false;
-  let hold = 0;
+    const focus = document.getElementById('focus');
+    const focusOut = document.getElementById('focusOut');
 
-  function setBlur(px){
-    document.documentElement.style.setProperty('--blur', px.toFixed(2) + 'px');
-  }
+    const stabilize = document.getElementById('stabilize');
+    const holdOut = document.getElementById('hold');
 
-  function updateProgress(){
-    eyeDone.textContent =
-      `ПРАВЕ: ${passed.R ? '✅' : '❌'} • ЛІВЕ: ${passed.L ? '✅' : '❌'}`;
-  }
+    const finalLine = document.getElementById('finalLine');
 
-  function update(){
-    const d = Math.abs(focus.value - TARGET[eye]);
-    let baseBlur = d / 6;
+    // Параметри складності (зроблено легше)
+    const TARGET = { R: 62, L: 38 };     // “ідеальні” значення фокусу
+    const BLUR_OK = 1.05;                // наскільки “чітко”, щоб зараховувало
+    const HOLD_SECONDS = 1.1;            // скільки тримати чітко
 
-    // 👁️ логіка напівчіткості
-    if (passed.R && !passed.L) {
-      baseBlur = Math.max(baseBlur, 1.8); // ~50% чіткості
+    let eye = 'R';
+    let passed = { R: false, L: false };
+
+    let holding = false;
+    let hold = 0;
+
+    function setBlur(px){
+        document.documentElement.style.setProperty('--blur', px.toFixed(2) + 'px');
     }
 
-    setBlur(baseBlur);
+    function isBlinking(){
+        return blink.classList.contains('on');
+    }
 
-    const sharp = baseBlur < 1.1 && !blink.classList.contains('on');
-    focusOut.textContent = sharp ? '✔' : '–';
-    status.textContent = sharp ? 'Стан: чітко' : 'Стан: нечітко';
+    function updateProgressText(){
+        eyeDone.textContent =
+            `ПРАВЕ: ${passed.R ? '✅' : '❌'} • ЛІВЕ: ${passed.L ? '✅' : '❌'}`;
+    }
 
-    if (!passed[eye] && holding && sharp){
-      hold += 0.016;
-      if (hold >= HOLD_SECONDS){
-        passed[eye] = true;
-        hold = 0;
+    function update(){
+        // blur based on distance to target
+        const d = Math.abs(Number(focus.value) - TARGET[eye]);
+        const blur = Math.max(0, d / 6);
+        setBlur(blur);
+
+        const sharp = (blur <= BLUR_OK) && !isBlinking();
+
+        status.textContent = sharp ? 'Стан: чітко' : 'Стан: нечітко';
+        focusOut.textContent = sharp ? '✔' : '–';
+
+        if (!passed[eye] && holding && sharp){
+            hold += 0.016; // ~60fps
+            if (hold >= HOLD_SECONDS){
+                passed[eye] = true;
+                hold = 0;
+                holding = false;
+                stabilize.classList.remove('active');
+
+                updateProgressText();
+
+                if (eye === 'R'){
+                    eye = 'L';
+                    eyeBtn.textContent = 'ЛІВЕ';
+                    hint.textContent = 'Тепер перевір ліве око';
+                } else {
+                    // FINISH
+                    finalLine.style.opacity = '1';
+                    hint.textContent = 'З Днем народження 🥳';
+                    status.textContent = 'Стан: ідеально';
+                }
+            }
+        } else {
+            // gentle decay, so blink doesn't ruin everything
+            hold = Math.max(0, hold - 0.006);
+        }
+
+        holdOut.textContent = hold.toFixed(1) + ' c';
+    }
+
+    // Stabilize = press and hold
+    stabilize.addEventListener('mousedown', () => {
+        holding = true;
+        stabilize.classList.add('active');
+    });
+    stabilize.addEventListener('mouseup', () => {
         holding = false;
         stabilize.classList.remove('active');
+    });
+    stabilize.addEventListener('mouseleave', () => {
+        holding = false;
+        stabilize.classList.remove('active');
+    });
 
-        updateProgress();
+    stabilize.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        holding = true;
+        stabilize.classList.add('active');
+    }, { passive: false });
+    stabilize.addEventListener('touchend', () => {
+        holding = false;
+        stabilize.classList.remove('active');
+    });
+    stabilize.addEventListener('touchcancel', () => {
+        holding = false;
+        stabilize.classList.remove('active');
+    });
 
-        if (eye === 'R'){
-          hint.textContent = 'Добре! Тепер відрегулюй ліве око';
-          eye = 'L';
-          eyeBtn.textContent = 'ЛІВЕ';
-        } else {
-          finalLine.style.opacity = '1';
-          hint.textContent = 'З Днем народження 🥳';
-          status.textContent = 'Стан: ідеально';
+    // Eye switch (manual). If already passed both, it doesn't matter.
+    eyeBtn.addEventListener('click', () => {
+        eye = (eye === 'R') ? 'L' : 'R';
+        eyeBtn.textContent = (eye === 'R') ? 'ПРАВЕ' : 'ЛІВЕ';
+        hold = 0;
+    });
+
+    // Blink loop (short, harmless)
+    function blinkLoop(){
+        // stop blinking after final reveal
+        if (passed.R && passed.L) return;
+
+        if (Math.random() < 0.012){
+            blink.classList.add('on');
+            setTimeout(() => blink.classList.remove('on'), 120);
         }
-      }
-    } else {
-      hold = Math.max(0, hold - 0.006);
     }
 
-    holdOut.textContent = hold.toFixed(1) + ' c';
-  }
-
-  stabilize.addEventListener('mousedown', () => {
-    holding = true;
-    stabilize.classList.add('active');
-  });
-  stabilize.addEventListener('mouseup', () => {
-    holding = false;
-    stabilize.classList.remove('active');
-  });
-  stabilize.addEventListener('mouseleave', () => {
-    holding = false;
-    stabilize.classList.remove('active');
-  });
-
-  function blinkLoop(){
-    if (passed.R && passed.L) return;
-    if (Math.random() < 0.012){
-      blink.classList.add('on');
-      setTimeout(()=>blink.classList.remove('on'), 120);
-    }
-  }
-
-  updateProgress();
-  setInterval(() => { update(); blinkLoop(); }, 16);
+    updateProgressText();
+    setInterval(() => { update(); blinkLoop(); }, 16);
 </script>
 </body>
 </html>
